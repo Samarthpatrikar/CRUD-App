@@ -54,21 +54,35 @@ app.delete('/employees/:id', (req, res) => {
 });
 
 
+// app.post('/employees', (req, res) => {
+//     let emp = req.body;
+//     var sql = "SET @id = ?;SET @Name = ?;SET @Country = ?; \
+//     CALL EmployeeAddOrEdit(@id,@Name,@Country);";
+//     mysqlConnection.query(sql, [emp.id, emp.Name, emp.Country], (err, rows, fields) => {
+//         if (!err)
+//             rows.forEach(element => {
+//                 if(element.constructor == Array)
+//                 res.send('Inserted employee id : '+element[0].id);
+//             });
+//         else
+//             console.log(err);
+//     })
+// });
 app.post('/employees', (req, res) => {
-    let emp = req.body;
-    var sql = "SET @id = ?;SET @Name = ?;SET @Country = ?; \
-    CALL EmployeeAddOrEdit(@id,@Name,@Country);";
-    mysqlConnection.query(sql, [emp.id, emp.Name, emp.Country], (err, rows, fields) => {
-        if (!err)
-            rows.forEach(element => {
-                if(element.constructor == Array)
-                res.send('Inserted employee id : '+element[0].id);
-            });
-        else
-            console.log(err);
+    let id = req.query.id ;
+    let Country = req.query.Country ;
+    let Name = req.query.Name ;
+    let sql = 'INSERT INTO employee(id,Name,Country) VALUE(?,?,?)' ;
+    mysqlConnection.query(sql, [id ,Name, Country], (err, rows, fields) => {
+                if (!err)
+                 
+                        
+                 res.send('Inserted employee');
+                    
+                else
+                    console.log(err);
     })
 });
-
 
 app.put('/employees', (req, res) => {
     let emp = req.body;
