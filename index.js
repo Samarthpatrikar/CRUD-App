@@ -54,20 +54,7 @@ app.delete('/employees/:id', (req, res) => {
 });
 
 
-// app.post('/employees', (req, res) => {
-//     let emp = req.body;
-//     var sql = "SET @id = ?;SET @Name = ?;SET @Country = ?; \
-//     CALL EmployeeAddOrEdit(@id,@Name,@Country);";
-//     mysqlConnection.query(sql, [emp.id, emp.Name, emp.Country], (err, rows, fields) => {
-//         if (!err)
-//             rows.forEach(element => {
-//                 if(element.constructor == Array)
-//                 res.send('Inserted employee id : '+element[0].id);
-//             });
-//         else
-//             console.log(err);
-//     })
-// });
+
 app.post('/employees', (req, res) => {
     let id = req.query.id ;
     let Country = req.query.Country ;
@@ -84,14 +71,15 @@ app.post('/employees', (req, res) => {
     })
 });
 
-app.put('/employees', (req, res) => {
+app.patch('/employees/:id', (req, res) => {
+    const id = req.params.id ;
     let emp = req.body;
-    var sql = "SET @id = ?;SET @Name = ?;SET @Country = ?; \
-    CALL EmployeeAddOrEdit(@id,@Name,@Country);";
-    mysqlConnection.query(sql, [emp.id, emp.Name, emp.Country], (err, rows, fields) => {
+    var sql = "update employee set Name=? , Country=? where id =?";
+    mysqlConnection.query(sql, [emp.Name, emp.Country,id], (err, rows, fields) => {
         if (!err)
             res.send('Updated successfully');
         else
+        res.send('ID not Found');
             console.log(err);
     })
 });
